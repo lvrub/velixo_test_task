@@ -16,7 +16,7 @@ test.beforeEach(async ({ loginPage, baseURL }) => {
 
 })
 
-test('Verify today functionin in Excel', async ({ loginPage, excelPage, bookPage, context }) => {
+test('Verify today functionin in Excel', async ({ excelPage, bookPage, context }) => {
 
     await excelPage.clickBlankWorkbook()
 
