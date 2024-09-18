@@ -1,0 +1,18 @@
+{
+  "name": "velixo_test_task",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test --headed",
+    "install-browsers": "npx playwright install --with-deps chromium firefox webkit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.47.1",
+    "@types/node": "^22.5.5",
+    "dotenv": "latest"
+  }
+}
