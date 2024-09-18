@@ -1,7 +1,7 @@
 
 ***How to run***
-1. Use command **npm test**  or **npm test_head** to run the tests in console of your IDEA
-2. Use .env file to put EMAIL and PASSWORD 
+1. Use command **npm test**  or **npm test_head** to run the tests (in console of your IDEA).
+2. Use .env file to put real EMAIL and PASSWORD 
 
 ***Test scrtucture***
 1. Test has two part beforeEach hook and test itself. The  approauch is used to separate tetst and additional staff before test.
