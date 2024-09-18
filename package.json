@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test --headed",
+    "test": "npx playwright test",
     "install-browsers": "npx playwright install --with-deps chromium firefox webkit"
   },
   "keywords": [],

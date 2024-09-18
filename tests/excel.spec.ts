@@ -1,10 +1,10 @@
 import DateTime from '../utils/DateTime';
-import { test } from '../pages/pageFixtures/pages.ts'; 
+import { test } from '../pages/pageFixtures/pages.ts';
 
-test('Verify today functionin in Excel', async ({loginPage, excelPage, bookPage, context, baseURL }) => {
+const email = process.env.EMAIL as string;
+const password = process.env.PASSWORD as string;
 
-    const email = process.env.EMAIL as string;
-    const password = process.env.PASSWORD as string;
+test.beforeEach(async ({ loginPage, baseURL }) => {
 
     await loginPage.openLoginPage(`${baseURL}/launch/Excel/`);
     await loginPage.fillEmail(email)
@@ -13,6 +13,11 @@ test('Verify today functionin in Excel', async ({loginPage, excelPage, bookPage,
     await loginPage.clickButoonSighIn()
     await loginPage.waitForPageLoading();
     await loginPage.clickButtonYesPrompt() // prompt with text to not log out during a time
+
+})
+
+test('Verify today functionin in Excel', async ({ loginPage, excelPage, bookPage, context }) => {
+
     await excelPage.clickBlankWorkbook()
 
     const newPage = excelPage.switchToNewTab(context);
