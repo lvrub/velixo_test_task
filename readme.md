@@ -1,6 +1,6 @@
 
 ***How to run***
-1. Use command **npm test** to run the tests in console of your IDEA
+1. Use command **npm test**  or **npm test_head** to run the tests in console of your IDEA
 2. Use .env file to put EMAIL and PASSWORD 
 
 ***Test scrtucture***
