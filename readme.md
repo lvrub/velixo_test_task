@@ -10,6 +10,6 @@
 4. **util** directory contains auxiliary functions which can be used for tests
 5. Created test interacts with AUT thru UI part , but I use response from specific end point to check correctness of todays date. Maybe it's not the best approach, but I guess that it's one of possible way. 
 6. In general, the test is quite stable. However, I have encountered a few cases where the text disappears while typing a formula or text in an input field. I suspect this happens because the content isn't fully loaded. To address this, I'm using **waitForResponse** to ensure that the data is loaded and the page is stable before proceeding.
-
+7. You can find report in results folder after test running
 
 Recorded video with head mode: [View ](20240918_163006.mp4)
