@@ -12,5 +12,6 @@
 6. I created two approaches to put text into a sheet's cell.
 The first one (_fillTextEditor_) uses the text editor field ![alt text](image.png). The second one (_fillFirstSheetCell_) calculates specific coordinates to click on the first cell. The downside of the second approach is that manually moving the mouse can interrupt the method's execution, but it works faster.
 7. In general, the test is quite stable. However, I have encountered a few cases where the text disappears while typing a formula or text in an text editor field. I suspect this happens because the content isn't fully loaded. To address this, I'm using **waitForResponse** to ensure that the data is loaded and the page is stable before proceeding.
+8. Additionally, I created a method (_verifySheetContainsText_) that verifies if a date is present in the entire text from the sheet. But it works only when date is not masked and it requires additional Tesseract  library.
 
 Recorded video with head mode: [View ](20240918_163006.mp4)
