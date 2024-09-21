@@ -26,7 +26,7 @@ test('Verify today functionin in Excel', async ({ excelPage, bookPage, context, 
     await createdBookPage.waitForResponse('/moe_status_icons.png');
     await createdBookPage.fillFirstSheetCell('=TODAY()'); // or use await createdBookPage.fillTextEditor('=TODAY()');
     await createdBookPage.pressEnterKey()
-    // I invoke data from response end-point which returns results for specific cell and verify result for cell's row and column and  today date.
+    // I use data from response end-point which returns results for specific cell and verify result for cell's row and column and  today date.
     let results = await createdBookPage.getResponseBook();
     console.log(results)
     createdBookPage.checkRowOrder(1, results);
