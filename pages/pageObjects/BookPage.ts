@@ -18,10 +18,27 @@ class BookPage extends BasePage {
         return this.getBookFrame().locator('//div[@id="formulaBarTextDivId_textElement"]');
     }
 
+    private getSheetCanvas() {
+        return this.getBookFrame().locator('//div[@id="Sheet0_0_0_1"]//canvas');
+    }
+
     // I'm using a delay and an additional "=" sign because I've encountered cases where the first typed symbol unexpectedly disappeared.
     // Additionally, I'm waiting for a successful response in test to ensure the loading endpoint is complete (based on my research).
     async fillTextEditor(text: string) {
         await this.getTextEditorInput().pressSequentially(`=${text}`, { delay: 1000 });
+    }
+
+    async fillFirstSheetCell(text :string) {
+        const boundingBox = await this.getSheetCanvas()!.boundingBox();
+        if (!boundingBox) {
+          throw new Error('Canvas element not found');
+        }
+      
+        const clickX = boundingBox.x + 50;
+        const clickY = boundingBox.y + 30;
+      
+        await this.page.mouse.click(clickX, clickY);
+        await this.page.keyboard.type(text);
     }
 
     async getResponseBook() {
@@ -30,17 +47,18 @@ class BookPage extends BasePage {
        return await responseData.d.Result.CellModel.Cells[0];
     }
 
-    async checkColumnOrder(column: number, result: { Col: any; }) {
+    async checkColumnOrder(column: number, result: { Col: number; }) {
         expect(result.Col).toEqual(column)
     }
 
-    async checkRowOrder(row: number, result: { Col: any; }) {
-        expect(result.Col).toEqual(row)
+    async checkRowOrder(row: number, result: { Row: number; }) {
+        expect(result.Row).toEqual(row)
     }
 
-    async checkCellText(text: string, result: { Text: any; }) {
+    async checkCellText(text: string, result: { Text: string; }) {
         expect(result.Text).toEqual(text);
     }
+
 }
 
 export default  BookPage;
