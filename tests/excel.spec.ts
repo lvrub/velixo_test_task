@@ -16,7 +16,7 @@ test.beforeEach(async ({ loginPage, baseURL }) => {
 
 })
 
-test('Verify today functionin in Excel', async ({ excelPage, bookPage, context, page }) => {
+test('Verify today functionin in Excel', async ({ excelPage, bookPage, context }) => {
 
     await excelPage.clickBlankWorkbook()
 
@@ -28,7 +28,6 @@ test('Verify today functionin in Excel', async ({ excelPage, bookPage, context, 
     await createdBookPage.pressEnterKey()
     // I use data from response end-point which returns results for specific cell and verify result for cell's row and column and  today date.
     let results = await createdBookPage.getResponseBook();
-    console.log(results)
     createdBookPage.checkRowOrder(1, results);
     createdBookPage.checkColumnOrder(1, results);
     createdBookPage.checkCellText(DateTime.getTodayDate(), results)
