@@ -2,6 +2,7 @@ import { Locator, Page, expect } from "playwright/test";
 import { BasePage } from "./BasePage";
 import { FrameLocator } from "@playwright/test";
 import { strict } from "assert";
+import Tesseract from "tesseract.js";
 
 
 class BookPage extends BasePage {
@@ -35,7 +36,7 @@ class BookPage extends BasePage {
         }
       
         const clickX = boundingBox.x + 50;
-        const clickY = boundingBox.y + 30;
+        const clickY = boundingBox.y + 10;
       
         await this.page.mouse.click(clickX, clickY);
         await this.page.keyboard.type(text);
@@ -57,6 +58,39 @@ class BookPage extends BasePage {
 
     async checkCellText(text: string, result: { Text: string; }) {
         expect(result.Text).toEqual(text);
+    }
+    
+    async verifyTextInCanvas(expectedText: string) {
+        const extractedText = await this.extractTextFromCanvas();
+        if (!extractedText.includes(expectedText)) {
+            throw new Error(`Text "${expectedText}" not found on canvas.`);
+        }
+    }
+    
+    private async extractTextFromCanvas(): Promise<string> {
+        const canvasLocator = this.getSheetCanvas();
+        const canvasHandle = await canvasLocator.elementHandle();
+
+        if (!canvasHandle) {
+            throw new Error('Canvas element handle not found');
+        }
+    
+        // Get the canvas context and image data
+        const imageData = await canvasHandle.evaluate((canvas: HTMLCanvasElement) => {
+            const ctx = canvas.getContext('2d');
+            return ctx ? ctx.getImageData(0, 0, canvas.width, canvas.height) : null;
+        });
+    
+        if (!imageData) {
+            throw new Error('Unable to get image data from canvas');
+        }
+    
+        const image = new ImageData(imageData.data, imageData.width, imageData.height);
+        
+        // Use an OCR library like Tesseract.js to extract text
+        const text = await Tesseract.recognize(image);
+    
+        return text.data.text; // Return the recognized text
     }
 
 }
