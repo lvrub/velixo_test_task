@@ -48,49 +48,43 @@ class BookPage extends BasePage {
        return await responseData.d.Result.CellModel.Cells[0];
     }
 
-    async checkColumnOrder(column: number, result: { Col: number; }) {
+    async verifyColumnOrder(column: number, result: { Col: number; }) {
         expect(result.Col).toEqual(column)
     }
 
-    async checkRowOrder(row: number, result: { Row: number; }) {
+    async verifyRowOrder(row: number, result: { Row: number; }) {
         expect(result.Row).toEqual(row)
     }
 
-    async checkCellText(text: string, result: { Text: string; }) {
+    async verifyCellText(text: string, result: { Text: string; }) {
         expect(result.Text).toEqual(text);
     }
     
-    async verifyTextInCanvas(expectedText: string) {
+
+    //experimental method which verifies that whole text includes expected text, it works when a date is shown fully (not masked as ########)
+    async verifySheetContainsText(expectedText: string) {
         const extractedText = await this.extractTextFromCanvas();
-        if (!extractedText.includes(expectedText)) {
-            throw new Error(`Text "${expectedText}" not found on canvas.`);
-        }
+        expect(extractedText).toContain(expectedText);
     }
     
     private async extractTextFromCanvas(): Promise<string> {
         const canvasLocator = this.getSheetCanvas();
         const canvasHandle = await canvasLocator.elementHandle();
-
+    
         if (!canvasHandle) {
             throw new Error('Canvas element handle not found');
         }
     
-        // Get the canvas context and image data
-        const imageData = await canvasHandle.evaluate((canvas: HTMLCanvasElement) => {
-            const ctx = canvas.getContext('2d');
-            return ctx ? ctx.getImageData(0, 0, canvas.width, canvas.height) : null;
+        // Convert canvas to base64
+        const base64Image = await canvasHandle.evaluate((canvas: HTMLCanvasElement) => {
+            return canvas.toDataURL('image/png'); // Convert to base64
         });
     
-        if (!imageData) {
-            throw new Error('Unable to get image data from canvas');
-        }
-    
-        const image = new ImageData(imageData.data, imageData.width, imageData.height);
+        // Use Tesseract.js to extract text from the base64 image       
+        const { data: { text } } = await Tesseract.recognize(base64Image, 'eng');;
         
-        // Use an OCR library like Tesseract.js to extract text
-        const text = await Tesseract.recognize(image);
-    
-        return text.data.text; // Return the recognized text
+        console.log('Extracted text:', text);
+        return text;
     }
 
 }
