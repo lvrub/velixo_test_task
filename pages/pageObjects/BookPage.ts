@@ -24,7 +24,7 @@ class BookPage extends BasePage {
     }
 
     // I'm using a delay and an additional "=" sign because I've encountered cases where the first typed symbol unexpectedly disappeared.
-    // Additionally, I'm waiting for a successful response in test to ensure the loading endpoint is complete (based on my research).
+    // Additionally, you can wait response from '/moe_status_icons.png' in test to ensure the loading endpoint is complete (based on my research).
     async fillTextEditor(text: string) {
         await this.getTextEditorInput().pressSequentially(`=${text}`, { delay: 1000 });
     }
