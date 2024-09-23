@@ -23,11 +23,11 @@ test('Verify today functionin in Excel', async ({ excelPage, bookPage, context }
     const newPage = excelPage.switchToNewTab(context);
     let createdBookPage = bookPage(newPage);
 
-    await createdBookPage.waitForResponse('/moe_status_icons.png');
+    await createdBookPage.waitForPageLoading();
     await createdBookPage.fillFirstSheetCell('=TODAY()'); // or use await createdBookPage.fillTextEditor('=TODAY()');
     await createdBookPage.pressEnterKey()
     // I use response which returns results for specific cell and verify result for cell's row and column and today date.
-    let results = await createdBookPage.getResponseBook();
+    let results = await createdBookPage.getResponseBook(); 
     createdBookPage.verifyRowOrder(1, results);
     createdBookPage.verifyColumnOrder(1, results);
     createdBookPage.verifyCellText(DateTime.getTodayDate(), results)
